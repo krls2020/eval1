@@ -1,0 +1,20 @@
+zerops:
+  - setup: probeapp
+    build:
+      base: php@8.4
+      buildCommands:
+        - composer install --no-dev --optimize-autoloader 2>/dev/null || true
+      deployFiles: ['./']
+    run:
+      base: php-apache@8.4
+      ports:
+        - port: 80
+          httpSupport: true
+      envVariables:
+        APP_ENV: ${APP_ENV}
+        APP_DEBUG: ${APP_DEBUG}
+        APP_KEY: ${APP_KEY}
+        DB_HOST: ${probedb_hostname}
+        DB_USER: ${probedb_user}
+        DB_PASSWORD: ${probedb_password}
+        DB_DATABASE: ${probedb_dbName}
