@@ -18,3 +18,44 @@ zerops:
         DB_USER: ${probedb_user}
         DB_PASSWORD: ${probedb_password}
         DB_DATABASE: ${probedb_dbName}
+  # Development pool: each branch gets one container of it, with the
+  # repository checked out and a dev server the Mate's preview pane reaches.
+  - setup: probeapppool
+    build:
+      base: php@8.4
+      os: ubuntu
+      deployFiles: ./
+    run:
+      base: php-apache@8.4
+      os: ubuntu
+      ports:
+        - port: 8001
+          httpSupport: true
+        - port: 8002
+          httpSupport: true
+        - port: 8003
+          httpSupport: true
+        - port: 8004
+          httpSupport: true
+        - port: 8005
+          httpSupport: true
+        - port: 8006
+          httpSupport: true
+        - port: 8007
+          httpSupport: true
+        - port: 8008
+          httpSupport: true
+        - port: 8009
+          httpSupport: true
+        - port: 8010
+          httpSupport: true
+      envVariables:
+        APP_ENV: local
+        APP_DEBUG: "true"
+        DB_HOST: ${probedb_hostname}
+        DB_USER: ${probedb_user}
+        DB_PASSWORD: ${probedb_password}
+        DB_DATABASE: ${probedb_dbName}
+      prepareCommands:
+        - sudo sh -c 'u=https://github.com/zeropsio/zcp/releases/latest/download/zcp-devsup-linux-amd64; f=/usr/local/bin/zcp-devsup; if command -v curl >/dev/null; then curl -fsSL "$u" -o "$f"; else wget -qO "$f" "$u"; fi && chmod 0755 "$f"'
+      start: zcp-devsup run

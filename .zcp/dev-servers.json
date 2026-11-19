@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "previewPortBase": 8000,
+  "servers": [
+    { "name": "web", "port": 8080, "command": "php -S 0.0.0.0:8080 -t .", "preview": true }
+  ]
+}
