@@ -58,4 +58,6 @@ zerops:
         DB_DATABASE: ${probedb_dbName}
       prepareCommands:
         - sudo sh -c 'u=https://github.com/zeropsio/zcp/releases/latest/download/zcp-devsup-linux-amd64; f=/usr/local/bin/zcp-devsup; if command -v curl >/dev/null; then curl -fsSL "$u" -o "$f"; else wget -qO "$f" "$u"; fi && chmod 0755 "$f"'
-      start: zcp-devsup run
+      # php-apache runs start as root; the supervisor runs as zerops, where
+      # zcp's dev-server tools reach it (~/.zcp/devsup), with the start's env.
+      start: runuser -u zerops -- zcp-devsup run
